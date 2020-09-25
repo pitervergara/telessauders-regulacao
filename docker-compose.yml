@@ -16,7 +16,6 @@ services:
 
   nginx:
     build: ./nginx
-    container_name: nginx
     restart: always
     environment:
       TZ: America/Sao_Paulo
