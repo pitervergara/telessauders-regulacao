@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+
+  webapp:
+    build: ./webapp
+    restart: always
+    volumes:
+      - logs:/app/logs
+      - copias:/app/copias
+      - ./webapp/app:/app
+    environment:
+      TZ: America/Sao_Paulo
+
+    expose:
+      - 5000
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+    ports:
+      - "8080:80"
+
+
+
+volumes:
+  logs:
+  copias:

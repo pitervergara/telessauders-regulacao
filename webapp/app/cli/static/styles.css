@@ -1,0 +1,41 @@
+.container {
+    width: 80%;
+    margin-left: 10%;
+    padding-top: 2em;
+}
+
+textarea {
+    width: 100%;
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+#resultado {
+    width: 100%;
+    min-height: 200px;
+    background-color: #EEEEEE;
+    padding: 1em;
+    border: solid 2px #999;
+    overflow: scroll;
+}
+input[type="file"] {
+    display: block;
+    margin: 2em 0 2em 0;
+}
+input[type="submit"] {
+    min-width: 100px;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding: 1em;
+    display: block;
+}
+
+label {
+    font-size: 1.3em;
+    color: #999;
+}
+
+.link-outro {
+    float:right;
+}

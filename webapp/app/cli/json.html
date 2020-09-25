@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>TelessaúdeRS - Regulação</title>
+    <script src="static/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="static/styles.css"></link>
+
+    <script>
+
+    $(document).ready(function () {
+
+        function enviar() {
+            var qc = $("#solicitacoes").val()
+
+            qc = qc.split("\n");
+            var url = "/regulate?t=" + $("#threshould").val();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { "solicitacoes": JSON.stringify(qc) },
+                dataType: "json",
+                success: function (res) {
+                    var str = JSON.stringify(res, null, 2);
+                    $("#resultado").text(str);
+                },
+                error: function (res) {
+                    var str = JSON.stringify(res, null, 2);
+                    $("#resultado").html("Algo deu errado: <br>" + str);
+                }, beforeSend: function () {
+                    $("#enviar").val('Processando...').attr("disabled", true);
+                }, complete: function () {
+                    $("#enviar").val('Enviar').attr("disabled", false);
+                }
+            });         
+        }
+
+        $("#enviar").on("click", function(e){
+            e.preventDefault();
+            return enviar();
+        });
+
+        $("#threshould").on("change", function(){
+            $("#limiar-atual").html( $("#threshould").val() );
+        });            
+    });
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <form method="post" action="/regulate" enctype="multipart/form-data">
+            <label for="solicitacoes">Cole abaixo o texto dos encaminhamentos, um por linha, depois clique em enviar.</label>
+
+<textarea rows="15" id="solicitacoes">
+Paciente com relatos de hiperplasia prostática benigna desde 2010, pelo qual já realizou tratamento ( não bem definido ) com doxazosina 2 mg + finasterida 5 mg 1 cp a noite, agora refere estar tomando apenas doxazosina, assintomático no momento. Teve acompanhamento com urologista até março 2018. Solicita encaminhamento ao especialista pelo SUS. \nExames 14/02/18: PSAL 0,35 / PSAT 2,20 / creatinina 0,8.
+A paciente com cálculo no setor médio e cálice do polo inferior do rim direito, com 9mm e 33mm, com características que sugerem cálculo coraliforme, com discreta dilatação de alguns cálices, sintomática, necessitando de consulta e avaliação.
+</textarea>
+            <label for="threshould">Limiar</label>
+            <input type="range" min="0" max="1" value="0.5" class="slider" step="0.01" id="threshould">
+            <small>Limiar de probabilidade na classe positiva que um caso precisa superar para ser considerado Aprovado. Use as setas do teclado para maior precisão. <strong>Limiar Atual: <span id="limiar-atual">0.5</span></strong> </small>
+            <input type="submit" name="enviar" id="enviar" value="Enviar">
+        </form>
+
+
+        <pre id="resultado"></pre>
+
+        <small class="link-outro"><a href="form.html">Acesse o formulário para enviar os textos em uma planilha.</a></small>
+    </div>
+</body>
+
+</html>

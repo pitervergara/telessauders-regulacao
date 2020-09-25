@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>TelessaúdeRS - Regulação</title>
+    <script src="static/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="static/styles.css"></link>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#form-regulacao").on("submit", function (e) {
+                $("#form-regulacao").attr(
+                    "action", "/regulate?t=" + $("#threshould").val()
+                );
+                return true;
+            });
+
+            $("#threshould").on("change", function () {
+                $("#limiar-atual").html($("#threshould").val());
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <form method="post" action="/regulate" id="form-regulacao" enctype="multipart/form-data">
+            <label>Clique no botão abaixo e selecione a planilha, depois clique em enviar.</label> 
+            <input type="file" name="spreadsheet">
+
+            <label for="threshould">Limiar</label>
+            <input type="range" min="0" max="1" value="0.5" class="slider" step="0.01" id="threshould">
+            <small>Limiar de probabilidade na classe positiva que um caso precisa superar para ser considerado Aprovado. Use as
+                setas do teclado para maior precisão. <strong>Limiar Atual: <span id="limiar-atual">0.5</span></strong> </small>
+
+            <input type="submit" name="enviar" value="Enviar">
+
+            <hr>
+           <p>
+                Cada linha da planilha deve corresponder a um caso a ser regulado e deve haver uma coluna com título QUADROCLINICO contendo o texto do quadro
+                clínico do caso.
+                <a href="/cli/static/planilha-exemplo.xlsx">Veja aqui um exemplo de planilha</a>
+           </p>
+        </form>
+
+        <small class="link-outro"><a href="json.html">Acesse o formulário para enviar os textos diretamente, sem planilha.</a></small>
+    </div>
+</body>
+
+</html>
